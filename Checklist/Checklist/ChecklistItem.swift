@@ -11,4 +11,11 @@ import Foundation
 class ChecklistItem {
     var text = ""
     var checked = false
+    
+    
+
+
+func toggleChecked() {  // w odpowiednim miejscu wołam później item.toggleChecked
+    checked = !checked
+}
 }
