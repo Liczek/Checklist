@@ -137,8 +137,18 @@ class ChecklistViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    // Methods
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
+        //1 remove from arrey of items
+        items.remove(at: indexPath.row)
+        
+        //2 delete row from tableView
+        let indexPaths = [indexPath]
+        tableView.deleteRows(at: indexPaths, with: .automatic)
+    }
     
+    // Methods
+    //MARK: 1. Config Text and Checkmark
     func configureCheckmark(for cell: UITableViewCell,
                             with item: ChecklistItem) {   // to jest ten "item" który w cellForRowAt  i didSelectRowAt wyciągamy z [ChecklistItem] czyli ten let item =
         if item.checked {
@@ -148,10 +158,28 @@ class ChecklistViewController: UITableViewController {
         }
     }
     
+    
     func configureText(for cell: UITableViewCell, with item: ChecklistItem) {
         let label = cell.viewWithTag(1000) as! UILabel
         label.text = item.text
     }
+    
+    //MARK: 2. Add rows
+    @IBAction func addItem(_ sender: UIBarButtonItem) {
+        let newRowIndex = items.count
+        
+        let item = ChecklistItem()
+        item.text = "I am a new row"
+        item.checked = true
+        items.append(item)
+        
+        let indexPath = IndexPath(row: newRowIndex, section: 0)
+        let indexPaths = [indexPath]
+        tableView.insertRows(at: indexPaths, with: .automatic)
+    }
+    
+    
+    
     
     
 
