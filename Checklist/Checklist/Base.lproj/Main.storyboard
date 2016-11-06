@@ -41,7 +41,7 @@
                     <navigationItem key="navigationItem" title="Checklist" id="a2c-8F-NMO">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="jMg-cg-iwm">
                             <connections>
-                                <segue destination="oS2-Qm-h8M" kind="presentation" id="pct-VR-CWx"/>
+                                <segue destination="oS2-Qm-h8M" kind="presentation" identifier="AddItem" id="pct-VR-CWx"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -68,12 +68,16 @@
                                             <frame key="frameInset" width="320" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jOv-Ta-KRa">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name of the Item" textAlignment="natural" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jOv-Ta-KRa">
                                                     <frame key="frameInset" minX="8" minY="6" width="304" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <nil key="textColor"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                                    <connections>
+                                                        <action selector="done" destination="WUG-Tb-40b" eventType="editingDidEndOnExit" id="BgJ-bs-zid"/>
+                                                        <outlet property="delegate" destination="WUG-Tb-40b" id="P2E-ju-hBW"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -92,13 +96,14 @@
                                 <action selector="cancel" destination="WUG-Tb-40b" id="zqI-E3-Q9Y"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="AZP-P7-gWq">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" style="done" systemItem="done" id="AZP-P7-gWq">
                             <connections>
                                 <action selector="done" destination="WUG-Tb-40b" id="Hly-oo-uyf"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="doneBarButton" destination="AZP-P7-gWq" id="ZOA-3t-FxE"/>
                         <outlet property="textField" destination="jOv-Ta-KRa" id="hXU-nl-ioj"/>
                     </connections>
                 </tableViewController>
