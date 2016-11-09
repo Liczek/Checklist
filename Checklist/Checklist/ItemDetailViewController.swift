@@ -1,5 +1,5 @@
 //
-//  AddItemViewController.swift
+//  ItemDetailViewController.swift
 //  Checklist
 //
 //  Created by Paweł Liczmański on 05.11.2016.
@@ -9,35 +9,54 @@
 import Foundation
 import UIKit
 
-protocol AddItemViewControllerDelegate: class {
-    func addItemViewControllerDidCancel(_ controller: AddItemViewController)
-    func addItemViewController(_ controller: AddItemViewController, didFinishAdding item: ChecklistItem)
+protocol ItemDetailViewControllerDelegate: class {
+    func itemDetailViewControllerDidCancel(_ controller: ItemDetailViewController)
+    func itemDetailViewController(_ controller: ItemDetailViewController, didFinishAdding item: ChecklistItem)
+    func itemDetailViewController(_ controller: ItemDetailViewController, didFinishEditing item: ChecklistItem)
 }
 
-class AddItemViewController: UITableViewController, UITextFieldDelegate {
+class ItemDetailViewController: UITableViewController, UITextFieldDelegate {
     
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var doneBarButton: UIBarButtonItem!
     
-    weak var delegate: AddItemViewControllerDelegate?
+    var itemToEdit: ChecklistItem?
+    
+    weak var delegate: ItemDetailViewControllerDelegate?
     
     
     @IBAction func cancel() {
-        delegate?.addItemViewControllerDidCancel(self)
+        delegate?.itemDetailViewControllerDidCancel(self)
         //dismiss(animated: true, completion: nil)
     }
     
     @IBAction func done() {
+        
+        if let item = itemToEdit {
+            item.text = textField.text!
+            delegate?.itemDetailViewController(self, didFinishEditing: item)
+        } else {
+        
         
         let item = ChecklistItem()
         item.text = textField.text!
         item.checked = true
         
         
-            delegate?.addItemViewController(self, didFinishAdding: item)
-        
+        delegate?.itemDetailViewController(self, didFinishAdding: item)
+        }
 //        print("Contents of the text field: \(textField.text!)")        
 //        dismiss(animated: true, completion: nil)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        if let item = itemToEdit {
+            title = "Edit Item"
+            textField.text = item.text
+            doneBarButton.isEnabled = true
+        }
     }
     
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
