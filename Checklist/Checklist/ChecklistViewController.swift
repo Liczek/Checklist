@@ -150,6 +150,8 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
         
         
         super.init(coder: aDecoder)
+        loadChecklistItems()
+        
         print("\nDocument folder is \(documentsDirectory())")
         print("\nData file path is \(dataFilePath())\n")
     }
@@ -231,6 +233,7 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
     }
     
     //MARK: SandBox - przechowywanie danych w pamięci telefonu (Documents)
+    // Win+Shift+G wyszukaj ścieżkę w Finderze
     
     func documentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
@@ -239,7 +242,7 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
 
     
     func dataFilePath() -> URL {
-        return documentsDirectory().appendingPathComponent("Checklist,plist")
+        return documentsDirectory().appendingPathComponent("Checklist.plist")
     }
     
     func saveChecklistItems() {
@@ -248,6 +251,17 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
         archiver.encode(items, forKey: "ChecklistItems")
         archiver.finishEncoding()
         data.write(to: dataFilePath(), atomically: true)
+    }
+    
+    func loadChecklistItems() {
+        let path = dataFilePath()
+        
+        if let data = try? Data(contentsOf: path) {
+            
+            let unarchiver = NSKeyedUnarchiver(forReadingWith: data)
+            items = unarchiver.decodeObject(forKey: "ChecklistItems") as! [ChecklistItem]
+            unarchiver.finishDecoding()
+        }
     }
     
         
